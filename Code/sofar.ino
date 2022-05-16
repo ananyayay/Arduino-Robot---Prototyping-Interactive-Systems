@@ -1,5 +1,6 @@
 #include <LiquidCrystal.h>
-
+#include <IRremote.h>
+const int RECV_PIN = 7;
 const int rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 int melodyWin[]={262, 196, 196, 220, 196, 0, 247, 262};
@@ -13,6 +14,8 @@ String options[4] = {"1. Delhi 2. Paris 3. Berlin",
                         "1. London 2. Berlin 3. Paris",
                         "1. Paris 2. London 3. Rome"};
 String ans[4] = {"A", "A", "B", "C"};
+IRrecv irrecv(RECV_PIN);
+decode_results results;
 int noteDurationsWin[]={4, 8, 8, 4, 4, 4, 4, 4};
 int noteDurationsLose[] = {2,2,2};
 int ledPin = LED_BUILTIN;    // choose the pin for the LED
@@ -28,9 +31,12 @@ int wonflag = 0;
 int scorePressed = 0;
 int clearFlag = 0;
 int ledClear;
+int gameMode = 0;
+
 void setup()
 {
-  Serial.begin( 9600 );
+  Serial.begin(9600);
+  irrecv.enableIRIn();
   pinMode(ledPin, OUTPUT);   // declare LED as output
   pinMode(inputC, INPUT); // declare push button inputs
   pinMode(inputB, INPUT);
@@ -45,6 +51,42 @@ void setup()
 
 void loop()
 {
+  if (irrecv.decode(&results)){
+    if (gameMode == 0){
+      gameMode = 1;
+    }
+    else if (gameMode == 1){
+      gameMode = 0;
+    }
+  }
+  if (gameMode == 0){
+    PlayQuiz();
+  }
+  else{
+    PlayMusicGame();
+  }
+}
+
+void PlayMusicGame(){
+  if (digitalRead(scoreButton) == 1){
+    int noteDuration = 1000 / 1;
+    tone(buzzerPin, 262, noteDuration);
+  }
+  else if (digitalRead(inputA) == 0){
+    int noteDuration = 1000 / 1;
+    tone(buzzerPin, 294, noteDuration);
+  }
+  if (digitalRead(inputB) == 1){
+    int noteDuration = 1000 / 1;
+    tone(buzzerPin, 330, noteDuration);
+  }
+  else if (digitalRead(inputC) == 0){
+    int noteDuration = 1000 / 1;
+    tone(buzzerPin, 349, noteDuration);
+  }
+}
+
+void PlayQuiz(){
   lcd.scrollDisplayLeft();
   delay(400);
   if (quesNum == 4 && ledClear == 0){
@@ -127,7 +169,6 @@ void loop()
   }
   }
 }
-
 void checkPush(int pinNumber)
 {
 
