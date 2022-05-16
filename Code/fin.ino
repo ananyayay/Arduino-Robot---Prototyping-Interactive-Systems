@@ -83,7 +83,7 @@ void PlayMusicGame(){
     int noteDuration = 1000 / 1;
     tone(buzzerPin, 262, noteDuration);
   }
-  else if (digitalRead(inputA) == 0){
+  else if (digitalRead(inputA) == 1){
     int noteDuration = 1000 / 1;
     tone(buzzerPin, 294, noteDuration);
   }
@@ -91,7 +91,7 @@ void PlayMusicGame(){
     int noteDuration = 1000 / 1;
     tone(buzzerPin, 330, noteDuration);
   }
-  else if (digitalRead(inputC) == 0){
+  else if (digitalRead(inputC) == 1){
     int noteDuration = 1000 / 1;
     tone(buzzerPin, 349, noteDuration);
   }
