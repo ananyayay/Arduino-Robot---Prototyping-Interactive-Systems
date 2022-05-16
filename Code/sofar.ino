@@ -27,6 +27,7 @@ int quesNum;
 int wonflag = 0;
 int scorePressed = 0;
 int clearFlag = 0;
+int ledClear;
 void setup()
 {
   Serial.begin( 9600 );
@@ -46,14 +47,19 @@ void loop()
 {
   lcd.scrollDisplayLeft();
   delay(400);
-  if (quesNum == 4){
+  if (quesNum == 4 && ledClear == 0){
     wonflag = 1;
+    if (ledClear == 0){
+      ledClear = 1;
+      lcd.clear();
+    }
     lcd.setCursor(0, 0); 
     lcd.print("YOU WIN WITH SCORE");
     lcd.setCursor(0, 1); 
     lcd.print("                        ");
     lcd.print(score);
   }
+  else{
   if (digitalRead(ScoreButton) == HIGH && wonflag == 0){
     if (scorePressed == 1){
       WriteQuestion();
@@ -117,6 +123,7 @@ void loop()
   Serial.println(digitalRead(inputC));
   for(int i=6 ; i<=8 ; i++){
     checkPush(i);
+  }
   }
 }
 
