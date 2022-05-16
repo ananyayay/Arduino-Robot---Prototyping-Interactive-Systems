@@ -3,7 +3,7 @@
 const int rs = 12, en = 11, d4 = 5, d5 = 4, d6 = 3, d7 = 2;
 LiquidCrystal lcd(rs, en, d4, d5, d6, d7);
 int melodyWin[]={262, 196, 196, 220, 196, 0, 247, 262};
-int melodyLose[] = {262,294,330,349,392,880,988,523};
+int melodyLose[] = {262,294,330};
 String Questions[4] = {"1. What is the capital of India?", 
                       "2. What is the capital of France?", 
                       "3. What is the capital of Germany?", 
@@ -14,7 +14,7 @@ String options[4] = {"1. Delhi 2. Paris 3. Berlin",
                         "1. Paris 2. London 3. Rome"};
 String ans[4] = {"A", "A", "B", "C"};
 int noteDurationsWin[]={4, 8, 8, 4, 4, 4, 4, 4};
-int noteDurationsLose[] = {2,2,2,2,2,2,2,2};
+int noteDurationsLose[] = {2,2,2};
 int ledPin = LED_BUILTIN;    // choose the pin for the LED
 int inputC = 6;       // define push button input pins
 int inputB = 7;
@@ -110,12 +110,13 @@ void loop()
     score++;
     WriteQuestion();
   }
-  else if (wonflag == 0 && (digitalRead(inputA) == HIGH && ans[quesNum] != "A") || (digitalRead(inputB) == HIGH && ans[quesNum] != "B") || (digitalRead(inputC) == HIGH && ans[quesNum] != "C")){
+  else if (wonflag == 0 && ((digitalRead(inputA) == HIGH && ans[quesNum] != "A") || (digitalRead(inputB) == HIGH && ans[quesNum] != "B") || (digitalRead(inputC) == HIGH && ans[quesNum] != "C"))){
     clearFlag = 0;
     WriteQuestion();
     PlayLose();
     quesNum = 0;
     score = 0;
+    setup();
     WriteQuestion();
   }
   Serial.println(digitalRead(inputA));
